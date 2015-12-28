@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 from generate import generate
 from util import save_file
 from pprint import pprint
+from collections import OrderedDict
 
 
 
@@ -67,9 +68,8 @@ class WtsoScraper(object):
     def build(self):
         print '[debug]: Starting [building] function'
         #database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc(),self.get_mobile())
-        database = [{"Episodes":[{"title":a,"url":b,"thumb":c,"description":d,"mobile":e}]} for a,b,c,d,e in zip(self.get_data()[0],self.get_video(),self.get_data()[1], self.get_desc(),self.get_mobile())]
-        pprint(database)
-        #save_file(database,'data/Season_1.json')
+        database = {"Episodes":[{"title":a,"url":b,"thumb":c,"description":d,"mobile":e} for a,b,c,d,e in zip(self.get_data()[0],self.get_video(),self.get_data()[1], self.get_desc(),self.get_mobile())]}        #pprint(database)
+        save_file(database,'data/Season_1.json')
 
 
 abc = WtsoScraper()
