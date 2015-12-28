@@ -1,6 +1,8 @@
-import requests
 import re
+
 import js2py
+import requests
+
 
 class generate(object):
     def __init__(self, url):

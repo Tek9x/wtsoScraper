@@ -1,6 +1,7 @@
-import requests
+import requests, json
 from bs4 import BeautifulSoup
 from generate import generate
+from util import save_file
 
 
 class WtsoScraper(object):
@@ -10,11 +11,13 @@ class WtsoScraper(object):
         self.soup = BeautifulSoup(self.data, 'lxml')
 
     def get_urls(self):
+        print '[debug]: Starting [get_urls] function'
         u = self.soup.select("div.entryBlock [href]")
         episodes = [link['href'] for link in u]
         return episodes
 
     def get_data(self):
+        print '[debug]: Starting [get_data] function'
         t = self.soup.select(".a1")
         whitespace = [self.sanitize(i) for i in t]
         titles = [x.strip(' ') for x in whitespace]
@@ -24,6 +27,7 @@ class WtsoScraper(object):
 
     def get_video(self):
         videos = []
+        print '[debug]: Starting [get_video] function'
         for i in self.get_urls():
             r = requests.get(i)
             data = r.text
@@ -33,6 +37,7 @@ class WtsoScraper(object):
         return videos
 
     def get_desc(self):
+        print '[debug]: Starting [get_desc] function'
         description = []
         r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=1')
         data = r.text
@@ -44,22 +49,26 @@ class WtsoScraper(object):
         return whitespace
 
     def get_mobile(self):
+        print '[debug]: Starting [get_mobile] function'
         mobile = [generate(i).WebsiteEval() for i in self.get_video()]
-        return mobile
+        print mobile
 
-    def sanitize(self, lst):
+    @staticmethod
+    def sanitize(lst):
+        print '[debug]: Starting [santize] function on {0}'.format(lst)
         tags = lst.string.strip()
         sanitize = str(tags).lstrip('Season 1234567890 episode')
         final_t = str(sanitize).lstrip('-')
         return final_t
 
     def build(self):
+        print '[debug]: Starting [building] function'
         database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc(), self.get_mobile())
-        return database
+        save_file(database,'save.json')
 
 
 abc = WtsoScraper()
-print abc.build()[0]
+print abc.get_video()
 
 if __name__ == '__main__':
     start = WtsoScraper()
