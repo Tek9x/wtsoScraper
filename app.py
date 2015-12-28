@@ -6,7 +6,7 @@ from util import save_file
 
 class WtsoScraper(object):
     def __init__(self):
-        self.r = requests.get('http://www.wtso.cc/video/vic/eng/season_1?lang=en')
+        self.r = requests.get('http://www.wtso.cc/video/vic/eng/season_2?lang=en')
         self.data = self.r.text
         self.soup = BeautifulSoup(self.data, 'lxml')
 
@@ -39,7 +39,7 @@ class WtsoScraper(object):
     def get_desc(self):
         print '[debug]: Starting [get_desc] function'
         description = []
-        r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=1')
+        r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=2')
         data = r.text
         soup = BeautifulSoup(data, 'lxml')
         d = soup.select('div.item_description')
@@ -63,12 +63,12 @@ class WtsoScraper(object):
 
     def build(self):
         print '[debug]: Starting [building] function'
-        database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc(), self.get_mobile())
-        save_file(database,'save.json')
+        database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc())
+        save_file(database,'data/Season_2.json')
 
 
 abc = WtsoScraper()
-print abc.get_video()
+print abc.build()
 
 if __name__ == '__main__':
     start = WtsoScraper()
