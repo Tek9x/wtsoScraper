@@ -51,7 +51,7 @@ class WtsoScraper(object):
     def get_mobile(self):
         print '[debug]: Starting [get_mobile] function'
         mobile = [generate(i).WebsiteEval() for i in self.get_video()]
-        print mobile
+        return mobile
 
     @staticmethod
     def sanitize(lst):
@@ -63,7 +63,7 @@ class WtsoScraper(object):
 
     def build(self):
         print '[debug]: Starting [building] function'
-        database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc())
+        database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc(),self.get_mobile())
         save_file(database,'data/Season_2.json')
 
 
