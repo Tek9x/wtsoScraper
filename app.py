@@ -10,7 +10,7 @@ from collections import OrderedDict
 
 class WtsoScraper(object):
     def __init__(self):
-        self.r = requests.get('http://www.wtso.cc/video/vic/eng/season_3?lang=en')
+        self.r = requests.get('http://www.wtso.cc/video/vic/eng/season_7?lang=en')
         self.data = self.r.text
         self.soup = BeautifulSoup(self.data, 'lxml')
 
@@ -37,13 +37,13 @@ class WtsoScraper(object):
             data = r.text
             soup = BeautifulSoup(data, 'lxml')
             v = soup.find('iframe')['src']
-            videos.append(str(v).rstrip('&width=980&height=430'))
+            videos.append(v)
         return videos
 
     def get_desc(self):
         print '[debug]: Starting [get_desc] function'
         description = []
-        r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=3')
+        r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=7')
         data = r.text
         soup = BeautifulSoup(data, 'lxml')
         d = soup.select('div.item_description')
@@ -68,8 +68,8 @@ class WtsoScraper(object):
     def build(self):
         print '[debug]: Starting [building] function'
         #database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc(),self.get_mobile())
-        database = {"Episodes":[{"title":a,"url":b,"thumb":c,"description":d,"mobile":e} for a,b,c,d,e in zip(self.get_data()[0],self.get_video(),self.get_data()[1], self.get_desc(),self.get_mobile())]}        #pprint(database)
-        save_file(database,'data/Season_3.json')
+        database = {"Episodes":[{"title":a,"url":b,"thumb":c,"description":d,"mobile":e} for a,b,c,d,e in zip(self.get_data()[0],self.get_video(),self.get_data()[1], self.get_desc(), self.get_mobile())]}        #pprint(database)
+        save_file(database,'data/Season_7.json')
 
 
 abc = WtsoScraper()

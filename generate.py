@@ -2,6 +2,7 @@ import re
 
 import js2py
 import requests
+import spynner
 
 
 class generate(object):
