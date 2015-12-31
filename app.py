@@ -45,7 +45,7 @@ class WtsoScraper(object):
     def get_desc(self):
         print '[debug]: Starting [get_desc] function'
         description = []
-        r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=17')
+        r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=3')
         data = r.text
         soup = BeautifulSoup(data, 'lxml')
         d = soup.select('div.item_description')
@@ -70,7 +70,7 @@ class WtsoScraper(object):
         print '[debug]: Starting [building] function'
         #database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc(),self.get_mobile())
         database = {"Episodes":[{"title":a,"url":b,"thumb":c,"description":d,"mobile":e} for a,b,c,d,e in zip(self.get_data()[0],self.get_video(),self.get_data()[1], self.get_desc(), self.get_mobile())]}
-        save_file(database,'data/Season_17.json')
+        save_file(database,'data/Season_3.json')
 
 
 abc = WtsoScraper()
