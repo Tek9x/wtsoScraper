@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import requests, json
 from bs4 import BeautifulSoup
 from generate import generate
@@ -10,7 +12,7 @@ from collections import OrderedDict
 
 class WtsoScraper(object):
     def __init__(self):
-        self.r = requests.get('http://www.wtso.cc/video/vic/eng/season_23?lang=en')
+        self.r = requests.get('http://www.wtso.cc/video/vic/eng/season_17?lang=en')
         self.data = self.r.text
         self.soup = BeautifulSoup(self.data, 'lxml')
 
@@ -43,7 +45,7 @@ class WtsoScraper(object):
     def get_desc(self):
         print '[debug]: Starting [get_desc] function'
         description = []
-        r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=23')
+        r = requests.get('http://www.imdb.com/title/tt0096697/episodes?season=17')
         data = r.text
         soup = BeautifulSoup(data, 'lxml')
         d = soup.select('div.item_description')
@@ -59,17 +61,16 @@ class WtsoScraper(object):
 
     @staticmethod
     def sanitize(lst):
-        print '[debug]: Starting [santize] function on {0}'.format(lst)
         tags = lst.string.strip()
-        sanitize = str(tags).lstrip('Season 1234567890 episode')
-        final_t = str(sanitize).lstrip('-')
+        sanitize = tags.lstrip('Season 1234567890 episode')
+        final_t = sanitize.lstrip('-')
         return final_t
 
     def build(self):
         print '[debug]: Starting [building] function'
         #database = zip(self.get_data()[0], self.get_video(), self.get_data()[1], self.get_desc(),self.get_mobile())
         database = {"Episodes":[{"title":a,"url":b,"thumb":c,"description":d,"mobile":e} for a,b,c,d,e in zip(self.get_data()[0],self.get_video(),self.get_data()[1], self.get_desc(), self.get_mobile())]}
-        save_file(database,'data/Season_22.json')
+        save_file(database,'data/Season_17.json')
 
 
 abc = WtsoScraper()
